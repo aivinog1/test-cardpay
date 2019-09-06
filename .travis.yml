@@ -1,0 +1,18 @@
+language: java
+sudo: false
+cache:
+  directories:
+    - $HOME/.m2
+install:
+  - gem install pdd -v 0.20.5
+script:
+  - set -e
+  - pdd --file=/dev/null
+  - mvn clean verify
+env:
+  global:
+    - JAVA_OPTS="-Xmx256m"
+jdk:
+  - oraclejdk8
+dist: trusty
+after_success: bash <(curl -s https://codecov.io/bash)
