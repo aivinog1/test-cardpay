@@ -1,0 +1,4 @@
+spring:
+  main:
+    web-environment: false
+    banner-mode: "OFF"
