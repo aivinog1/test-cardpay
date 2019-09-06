@@ -1,6 +1,7 @@
 language: java
 sudo: false
 cache:
+  # @todo #1:30m Needs to set up cache for ruby dependencies. This can speed up builds.
   directories:
     - $HOME/.m2
 install:
