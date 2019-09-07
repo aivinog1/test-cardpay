@@ -1,1 +1,11 @@
-# @todo #1:30m Needs to implement Rultor integration. We should merge our requests only via Rultor.
+architect:
+  - aivinog1
+docker:
+  image: yegor256/java8
+install:
+  - sudo gem install --no-rdoc --no-ri pdd
+merge:
+  script:
+    - pdd --file=/dev/null
+    - mvn verify
+# @todo #9:30m Add a release stage. For now this jar isn't published.
