@@ -22,6 +22,9 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class Runner implements CommandLineRunner {
 
+    /**
+     * @todo #3:30m Let's use {@link ExecutionService} for processing. It is implement all the features that we need for processing files.
+     */
     private final Map<SupportedFileType, ConverterService> converterServiceMap;
     private final ObjectMapper objectMapper;
     private final Logger logger;
@@ -43,7 +46,7 @@ public class Runner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         final ConverterService converterService = converterServiceMap.get(SupportedFileType.JSON);
         final File tempFile = File.createTempFile("test", "test");
-        final CompletableFuture<List<Response>> convertResult = converterService.convert(CompletableFuture.completedFuture(tempFile));
+        final CompletableFuture<List<Response>> convertResult = converterService.convert(CompletableFuture.completedFuture(tempFile.toPath()));
         final List<Response> responses = convertResult.get();
         for (final Response response : responses) {
             logger.info(objectMapper.writeValueAsString(response));

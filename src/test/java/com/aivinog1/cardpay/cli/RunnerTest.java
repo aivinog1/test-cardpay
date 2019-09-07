@@ -8,17 +8,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.slf4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
+import static com.aivinog1.cardpay.TestUtils.readToString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -39,7 +35,7 @@ public class RunnerTest {
     public void baseTest() throws Exception {
         when(jsonConverterService.type()).thenReturn(SupportedFileType.JSON);
         final Response response = new Response(1L, 1L, "comment", "filename", 1L, "OK");
-        when(jsonConverterService.convert(any()))
+        when(jsonConverterService.convert(any(CompletableFuture.class)))
                 .thenReturn(CompletableFuture.completedFuture(
                 Collections.singletonList(response)));
         runner.run();
@@ -47,11 +43,5 @@ public class RunnerTest {
             verify(logger, times(1)).info(eq(readToString(stream)));
         }
         verifyNoMoreInteractions(logger);
-    }
-
-    private String readToString(final InputStream stream) throws IOException {
-        try (final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))){
-            return bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
-        }
     }
 }
