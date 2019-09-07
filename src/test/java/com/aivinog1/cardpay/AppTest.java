@@ -16,7 +16,7 @@ public class AppTest {
     private App app;
 
     @Test
-    public void verifyThatRun() {
+    public void verifyThatRunTest() {
         assertNotNull(app);
     }
 }
