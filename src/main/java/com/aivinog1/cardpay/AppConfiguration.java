@@ -1,7 +1,9 @@
 package com.aivinog1.cardpay;
 
+import com.aivinog1.cardpay.convert.JsonType;
 import com.aivinog1.cardpay.convert.SupportedFileType;
 import com.aivinog1.cardpay.parse.ConverterService;
+import com.aivinog1.cardpay.parse.json.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +29,11 @@ public class AppConfiguration {
     @Bean
     public Map<SupportedFileType, ConverterService> convertersMap(List<ConverterService> converters) {
         return converters.stream().collect(Collectors.toMap(ConverterService::type, Function.identity()));
+    }
+
+    @Bean
+    public Map<JsonType, JsonParser> parsersMap(List<JsonParser> jsonParsers) {
+        return jsonParsers.stream().collect(Collectors.toMap((JsonParser::getType), Function.identity()));
     }
 
     @Bean
