@@ -12,7 +12,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -47,7 +46,7 @@ public class AppConfiguration {
      * @todo #3:30m Let's move configuration of the Executor in configuration files. That gives us more flexibility.
      */
     @Bean(FILE_TASK_EXECUTOR)
-    public Executor fileTaskExecutor() {
+    public ThreadPoolTaskExecutor fileTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(25);
@@ -61,7 +60,7 @@ public class AppConfiguration {
      * @todo #26:30m Let's move parameters of {@link ThreadPoolTaskExecutor} to the configuration for extended flexibility.
      */
     @Bean(EXECUTOR_SERVICE_EXECUTOR)
-    public Executor executorServiceExecutor() {
+    public ThreadPoolTaskExecutor executorServiceExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(25);

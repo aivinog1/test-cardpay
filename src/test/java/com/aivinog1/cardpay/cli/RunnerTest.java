@@ -19,7 +19,7 @@ public class RunnerTest {
 
     private final Logger logger = mock(Logger.class);
     private final ExecutionService executionService = mock(ExecutionService.class);
-    private final Runner runner = new Runner(executionService, new ObjectMapper(), logger);
+    private final Runner runner = new Runner(executionService, new ObjectMapper(), logger, Collections.emptyList());
 
     @Test
     public void baseTest() throws Exception {

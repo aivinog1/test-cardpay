@@ -6,9 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.scheduling.concurrent.ExecutorConfigurationSupport;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -21,18 +24,21 @@ public class Runner implements CommandLineRunner {
     private final ExecutionService executionService;
     private final ObjectMapper objectMapper;
     private final Logger logger;
+    private final List<ThreadPoolTaskExecutor> executors;
 
     @Autowired
-    public Runner(ExecutionService executionService, ObjectMapper objectMapper) {
+    public Runner(ExecutionService executionService, ObjectMapper objectMapper, List<ThreadPoolTaskExecutor> executors) {
         this.executionService = executionService;
         this.objectMapper = objectMapper;
+        this.executors = executors;
         this.logger = LoggerFactory.getLogger(Runner.class);
     }
 
-    public Runner(ExecutionService executionService, ObjectMapper objectMapper, Logger logger) {
+    public Runner(ExecutionService executionService, ObjectMapper objectMapper, Logger logger, List<ThreadPoolTaskExecutor> executors) {
         this.executionService = executionService;
         this.objectMapper = objectMapper;
         this.logger = logger;
+        this.executors = executors;
     }
 
     @Override
@@ -59,5 +65,6 @@ public class Runner implements CommandLineRunner {
                         throw new RuntimeException(e);
                     }
                 });
+        executors.forEach(ExecutorConfigurationSupport::shutdown);
     }
 }
