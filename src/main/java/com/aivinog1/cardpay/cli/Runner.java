@@ -1,8 +1,6 @@
 package com.aivinog1.cardpay.cli;
 
-import com.aivinog1.cardpay.convert.Response;
-import com.aivinog1.cardpay.convert.SupportedFileType;
-import com.aivinog1.cardpay.parse.ConverterService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.Collection;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author aivinog1
@@ -22,34 +18,46 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class Runner implements CommandLineRunner {
 
-    /**
-     * @todo #3:30m Let's use {@link ExecutionService} for processing. It is implement all the features that we need for processing files.
-     */
-    private final Map<SupportedFileType, ConverterService> converterServiceMap;
+    private final ExecutionService executionService;
     private final ObjectMapper objectMapper;
     private final Logger logger;
 
     @Autowired
-    public Runner(Map<SupportedFileType, ConverterService> converterServiceMap, ObjectMapper objectMapper) {
-        this.converterServiceMap = converterServiceMap;
+    public Runner(ExecutionService executionService, ObjectMapper objectMapper) {
+        this.executionService = executionService;
         this.objectMapper = objectMapper;
         this.logger = LoggerFactory.getLogger(Runner.class);
     }
 
-    public Runner(Map<SupportedFileType, ConverterService> converterServiceMap, ObjectMapper objectMapper, Logger logger) {
-        this.converterServiceMap = converterServiceMap;
+    public Runner(ExecutionService executionService, ObjectMapper objectMapper, Logger logger) {
+        this.executionService = executionService;
         this.objectMapper = objectMapper;
         this.logger = logger;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        final ConverterService converterService = converterServiceMap.get(SupportedFileType.JSON);
-        final File tempFile = File.createTempFile("test", "test");
-        final CompletableFuture<List<Response>> convertResult = converterService.convert(CompletableFuture.completedFuture(tempFile.toPath()));
-        final List<Response> responses = convertResult.get();
-        for (final Response response : responses) {
-            logger.info(objectMapper.writeValueAsString(response));
+        if (args == null || args.length == 0) {
+            logger.error("Needs to specify file paths as parameters to this app. Abort.");
+            return;
         }
+        executionService.parseFiles(args)
+                .map(listCompletableFuture -> {
+                    try {
+                        return listCompletableFuture.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        // @todo #14:15m Let's create dedicate exception for this. Our code must be clear from RuntimeExceptions.
+                        throw new RuntimeException(e);
+                    }
+                })
+                .flatMap(Collection::parallelStream)
+                .forEach(response -> {
+                    try {
+                        logger.info(objectMapper.writeValueAsString(response));
+                    } catch (JsonProcessingException e) {
+                        // @todo #14:15m Let's create dedicate exception for this. Our code must be clear from RuntimeExceptions.
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 }
