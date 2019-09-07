@@ -4,6 +4,7 @@ import com.aivinog1.cardpay.convert.Response;
 import com.aivinog1.cardpay.convert.SupportedFileType;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -13,7 +14,9 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface ConverterService {
 
-    CompletableFuture<List<Response>> convert(CompletableFuture<File> file);
+    CompletableFuture<List<Response>> convert(CompletableFuture<Path> file);
+
+    List<Response> convert(Path file);
 
     SupportedFileType type();
 }
