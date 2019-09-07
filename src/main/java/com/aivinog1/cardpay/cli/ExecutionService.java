@@ -24,9 +24,6 @@ public class ExecutionService {
     private final Map<SupportedFileType, ConverterService> converterServiceMap;
 
     public Stream<CompletableFuture<List<Response>>> parseFiles(String... filePaths) {
-        if (filePaths == null || filePaths.length == 0) {
-            throw new IllegalArgumentException("Needs to specify file paths as parameters to this app. Abort.");
-        }
 
         return fileService.getFiles(filePaths)
                 .map(pathCompletableFuture -> pathCompletableFuture
