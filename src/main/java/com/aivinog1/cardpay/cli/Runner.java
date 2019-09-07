@@ -46,7 +46,7 @@ public class Runner implements CommandLineRunner {
                     try {
                         return listCompletableFuture.get();
                     } catch (InterruptedException | ExecutionException e) {
-                        // @todo #14:15m Let's create dedicate exception for this. Our code must be clear from RuntimeExceptions.
+                        // @todo #14:15m Let's create dedicate exception for this. And think about exception handling. Our code must be clear from RuntimeExceptions.
                         throw new RuntimeException(e);
                     }
                 })
