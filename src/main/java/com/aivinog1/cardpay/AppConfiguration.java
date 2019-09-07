@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 public class AppConfiguration {
 
     public static final String FILE_TASK_EXECUTOR = "fileTaskExecutor";
+    public static final String EXECUTOR_SERVICE_EXECUTOR = "executorServiceExecutor";
 
     @Bean
     public Map<SupportedFileType, ConverterService> convertersMap(List<ConverterService> converters) {
@@ -52,6 +53,20 @@ public class AppConfiguration {
         executor.setMaxPoolSize(25);
         executor.setQueueCapacity(30);
         executor.setThreadNamePrefix("FileReading-");
+        return executor;
+    }
+
+    /**
+     * @return executor bean for {@link com.aivinog1.cardpay.cli.ExecutionService}
+     * @todo #26:30m Let's move parameters of {@link ThreadPoolTaskExecutor} to the configuration for extended flexibility.
+     */
+    @Bean(EXECUTOR_SERVICE_EXECUTOR)
+    public Executor executorServiceExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(25);
+        executor.setQueueCapacity(30);
+        executor.setThreadNamePrefix("ExcecutorService-");
         return executor;
     }
 }
