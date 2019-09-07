@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public final class TestUtils {
@@ -14,6 +15,12 @@ public final class TestUtils {
     public static String readToString(final InputStream stream) throws IOException {
         try (final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))){
             return bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
+        }
+    }
+
+    public static List<String> readToStrings(final InputStream stream) throws IOException {
+        try (final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))){
+            return bufferedReader.lines().collect(Collectors.toList());
         }
     }
 }
