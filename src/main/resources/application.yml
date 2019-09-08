@@ -22,7 +22,13 @@ cardplay:
         max-pool-size: 25
         queue-capacity: 30
         thread-name-prefix: "JsonParsing-"
+      csv-parser-executor:
+        core-pool-size: 10
+        max-pool-size: 25
+        queue-capacity: 30
+        thread-name-prefix: "CsvParsing-"
 logging:
   level:
     org:
       springframework: warn
+      hibernate: warn

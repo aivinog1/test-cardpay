@@ -1,8 +1,8 @@
 package com.aivinog1.cardpay.parse.json.impl;
 
-import com.aivinog1.cardpay.convert.JsonContainer;
-import com.aivinog1.cardpay.convert.JsonRequest;
 import com.aivinog1.cardpay.convert.JsonType;
+import com.aivinog1.cardpay.convert.Request;
+import com.aivinog1.cardpay.convert.RequestContainer;
 import com.aivinog1.cardpay.convert.Response;
 import com.aivinog1.cardpay.parse.json.JsonParser;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class ListOfJsonsJsonParser implements JsonParser {
 
     @Override
     public List<Response> parsed(List<String> lines, String fileName) {
-        final List<CompletableFuture<JsonContainer>> parsedJsons = new ArrayList<>(lines.size());
+        final List<CompletableFuture<RequestContainer>> parsedJsons = new ArrayList<>(lines.size());
         for (int i = 0; i < lines.size(); i++) {
             final String line = lines.get(i);
             parsedJsons.add(jsonObjectParser.parseJsonString(line, (long) i));
@@ -37,14 +37,14 @@ public class ListOfJsonsJsonParser implements JsonParser {
                         throw new RuntimeException(e);
                     }
                 })
-                .map(jsonContainer -> {
-                    final JsonRequest jsonRequest = jsonContainer.getJsonRequest();
+                .map(requestContainer -> {
+                    final Request jacksonRequest = requestContainer.getRequest();
                     return new Response(
-                            jsonRequest.getOrderId(),
-                            jsonRequest.getAmount(),
-                            jsonRequest.getComment(),
+                            jacksonRequest.getOrderId(),
+                            jacksonRequest.getAmount(),
+                            jacksonRequest.getComment(),
                             fileName,
-                            jsonContainer.getLine(),
+                            requestContainer.getLine(),
                             "OK");
                 })
                 .collect(Collectors.toList());

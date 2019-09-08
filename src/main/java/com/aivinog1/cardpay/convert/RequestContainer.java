@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Data
-public class JsonContainer {
-    private final JsonRequest jsonRequest;
+public class RequestContainer {
+    private final Request request;
     private final Long line;
 }

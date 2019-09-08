@@ -10,6 +10,7 @@ import org.springframework.scheduling.concurrent.ExecutorConfigurationSupport;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -25,20 +26,23 @@ public class Runner implements CommandLineRunner {
     private final ObjectMapper objectMapper;
     private final Logger logger;
     private final List<ThreadPoolTaskExecutor> executors;
+    private final PrintStream printStream;
 
     @Autowired
-    public Runner(ExecutionService executionService, ObjectMapper objectMapper, List<ThreadPoolTaskExecutor> executors) {
+    public Runner(ExecutionService executionService, ObjectMapper objectMapper, List<ThreadPoolTaskExecutor> executors, PrintStream printStream) {
         this.executionService = executionService;
         this.objectMapper = objectMapper;
         this.executors = executors;
+        this.printStream = printStream;
         this.logger = LoggerFactory.getLogger(Runner.class);
     }
 
-    public Runner(ExecutionService executionService, ObjectMapper objectMapper, Logger logger, List<ThreadPoolTaskExecutor> executors) {
+    public Runner(ExecutionService executionService, ObjectMapper objectMapper, Logger logger, List<ThreadPoolTaskExecutor> executors, PrintStream printStream) {
         this.executionService = executionService;
         this.objectMapper = objectMapper;
         this.logger = logger;
         this.executors = executors;
+        this.printStream = printStream;
     }
 
     @Override
@@ -59,7 +63,7 @@ public class Runner implements CommandLineRunner {
                 .flatMap(Collection::parallelStream)
                 .forEach(response -> {
                     try {
-                        logger.info(objectMapper.writeValueAsString(response));
+                        printStream.println(objectMapper.writeValueAsString(response));
                     } catch (JsonProcessingException e) {
                         // @todo #14:15m Let's create dedicate exception for this. Our code must be clear from RuntimeExceptions.
                         throw new RuntimeException(e);

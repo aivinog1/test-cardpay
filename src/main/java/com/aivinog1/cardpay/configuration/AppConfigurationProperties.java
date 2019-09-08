@@ -24,6 +24,8 @@ public class AppConfigurationProperties {
         private Executor executorServiceExecutor;
         @NotNull
         private Executor jsonParserExecutor;
+        @NotNull
+        private Executor csvParserExecutor;
     }
 
     @Data
