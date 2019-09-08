@@ -45,11 +45,11 @@ public class JsonConverterService implements ConverterService {
         if (firstLine.contains("[")) {
             // @todo #18:30m needs a dedicated exception for this. If we can't find an array element we can't process further.
             final JsonParser jsonParser = Optional.ofNullable(parserMap.get(JsonType.ARRAY)).orElseThrow(RuntimeException::new);
-            return jsonParser.parsed(lines);
+            return jsonParser.parsed(lines, file.toString());
         } else if (firstLine.contains("{")) {
             // @todo #18:30m needs a dedicated exception for this. If we can't find an list of object element we can't process further.
             final JsonParser jsonParser = Optional.ofNullable(parserMap.get(JsonType.LIST_OF_OBJECT)).orElseThrow(RuntimeException::new);
-            return jsonParser.parsed(lines);
+            return jsonParser.parsed(lines, file.toString());
         } else {
             // @todo #18:30m needs to improve this. If a file contains many empty strings before - this doesn't works.
             throw new UnsupportedOperationException("Can't find proper json type for this file.");

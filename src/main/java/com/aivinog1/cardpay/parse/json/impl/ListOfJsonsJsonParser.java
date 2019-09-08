@@ -21,7 +21,7 @@ public class ListOfJsonsJsonParser implements JsonParser {
     private final JsonObjectParser jsonObjectParser;
 
     @Override
-    public List<Response> parsed(List<String> lines) {
+    public List<Response> parsed(List<String> lines, String fileName) {
         final List<CompletableFuture<JsonContainer>> parsedJsons = new ArrayList<>(lines.size());
         for (int i = 0; i < lines.size(); i++) {
             final String line = lines.get(i);
@@ -39,7 +39,13 @@ public class ListOfJsonsJsonParser implements JsonParser {
                 })
                 .map(jsonContainer -> {
                     final JsonRequest jsonRequest = jsonContainer.getJsonRequest();
-                    return new Response(jsonRequest.getOrderId(), jsonRequest.getAmount(), jsonRequest.getComment(), "fileName", jsonContainer.getLine(), "OK");
+                    return new Response(
+                            jsonRequest.getOrderId(),
+                            jsonRequest.getAmount(),
+                            jsonRequest.getComment(),
+                            fileName,
+                            jsonContainer.getLine(),
+                            "OK");
                 })
                 .collect(Collectors.toList());
     }

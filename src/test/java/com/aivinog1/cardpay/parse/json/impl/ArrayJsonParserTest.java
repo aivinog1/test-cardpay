@@ -24,10 +24,11 @@ public class ArrayJsonParserTest {
     @Test
     public void testParsedSuccess() throws IOException {
         final List<String> strings;
-        try (final InputStream stream = ArrayJsonParserTest.class.getResourceAsStream("/input/SuccessArray.json")) {
+        final String pathToJson = "/input/SuccessArray.json";
+        try (final InputStream stream = ArrayJsonParserTest.class.getResourceAsStream(pathToJson)) {
             strings = TestUtils.readToStrings(stream);
         }
-        final List<Response> parsed = arrayJsonParser.parsed(strings);
+        final List<Response> parsed = arrayJsonParser.parsed(strings, pathToJson);
         assertEquals(parsed.size(), 4);
         final Response response0 = parsed.get(0);
         assertEquals(Long.valueOf(2L), response0.getId());

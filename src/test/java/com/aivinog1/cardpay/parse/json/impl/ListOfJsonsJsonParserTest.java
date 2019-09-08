@@ -24,8 +24,9 @@ public class ListOfJsonsJsonParserTest {
     @Test
     public void successTest() throws IOException {
         final List<Response> parsed;
-        try (final InputStream stream = ListOfJsonsJsonParser.class.getResourceAsStream("/input/SuccessListOfJson.json")) {
-            parsed = listOfJsonsJsonParser.parsed(TestUtils.readToStrings(stream));
+        final String pathToJson = "/input/SuccessListOfJson.json";
+        try (final InputStream stream = ListOfJsonsJsonParser.class.getResourceAsStream(pathToJson)) {
+            parsed = listOfJsonsJsonParser.parsed(TestUtils.readToStrings(stream), pathToJson);
         }
         assertEquals(4, parsed.size());
     }

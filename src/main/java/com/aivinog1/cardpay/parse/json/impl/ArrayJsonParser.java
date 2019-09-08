@@ -22,7 +22,7 @@ public class ArrayJsonParser implements JsonParser {
     private final ObjectMapper objectMapper;
 
     @Override
-    public List<Response> parsed(List<String> lines) {
+    public List<Response> parsed(List<String> lines, String fileName) {
         List<JsonRequest> requests;
         try {
             requests = objectMapper.readValue(lines.stream().collect(Collectors.joining(System.lineSeparator())),
@@ -33,8 +33,7 @@ public class ArrayJsonParser implements JsonParser {
         }
         return requests
                 .parallelStream()
-                // @todo #30:15m Let's pass to this method the file name. Needs the file name in the response.
-                .map(jsonRequest -> new Response(jsonRequest.getOrderId(), jsonRequest.getAmount(), jsonRequest.getComment(), "filename", 0L, "OK"))
+                .map(jsonRequest -> new Response(jsonRequest.getOrderId(), jsonRequest.getAmount(), jsonRequest.getComment(), fileName, 0L, "OK"))
                 .collect(Collectors.toList());
     }
 

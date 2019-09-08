@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface JsonParser {
 
-    List<Response> parsed(List<String> lines);
+    List<Response> parsed(List<String> lines, String fileName);
 
     JsonType getType();
 }

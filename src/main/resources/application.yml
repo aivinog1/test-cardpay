@@ -22,3 +22,7 @@ cardplay:
         max-pool-size: 25
         queue-capacity: 30
         thread-name-prefix: "JsonParsing-"
+logging:
+  level:
+    org:
+      springframework: warn
