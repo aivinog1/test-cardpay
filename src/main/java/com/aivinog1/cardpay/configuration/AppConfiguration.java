@@ -1,15 +1,17 @@
-package com.aivinog1.cardpay;
+package com.aivinog1.cardpay.configuration;
 
 import com.aivinog1.cardpay.convert.JsonType;
 import com.aivinog1.cardpay.convert.SupportedFileType;
 import com.aivinog1.cardpay.parse.ConverterService;
 import com.aivinog1.cardpay.parse.json.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
  * @since 06.09.2019
  */
 @Configuration
+@EnableConfigurationProperties(AppConfigurationProperties.class)
 @EnableAsync
 public class AppConfiguration {
 
@@ -41,31 +44,25 @@ public class AppConfiguration {
         return new ObjectMapper();
     }
 
-    /**
-     * @return executor that would be using for running reading tasks
-     * @todo #3:30m Let's move configuration of the Executor in configuration files. That gives us more flexibility.
-     */
     @Bean(FILE_TASK_EXECUTOR)
-    public ThreadPoolTaskExecutor fileTaskExecutor() {
+    public ThreadPoolTaskExecutor fileTaskExecutor(AppConfigurationProperties appConfigurationProperties) {
+        final AppConfigurationProperties.@NotNull Executor fileTaskExecutorConfig = appConfigurationProperties.getExecutors().getFileTaskExecutor();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(25);
-        executor.setQueueCapacity(30);
-        executor.setThreadNamePrefix("FileReading-");
+        executor.setCorePoolSize(fileTaskExecutorConfig.getCorePoolSize());
+        executor.setMaxPoolSize(fileTaskExecutorConfig.getMaxPoolSize());
+        executor.setQueueCapacity(fileTaskExecutorConfig.getQueueCapacity());
+        executor.setThreadNamePrefix(fileTaskExecutorConfig.getThreadNamePrefix());
         return executor;
     }
 
-    /**
-     * @return executor bean for {@link com.aivinog1.cardpay.cli.ExecutionService}
-     * @todo #26:30m Let's move parameters of {@link ThreadPoolTaskExecutor} to the configuration for extended flexibility.
-     */
     @Bean(EXECUTOR_SERVICE_EXECUTOR)
-    public ThreadPoolTaskExecutor executorServiceExecutor() {
+    public ThreadPoolTaskExecutor executorServiceExecutor(AppConfigurationProperties appConfigurationProperties) {
+        final AppConfigurationProperties.@NotNull Executor executorServiceExecutorConfig = appConfigurationProperties.getExecutors().getExecutorServiceExecutor();
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(25);
-        executor.setQueueCapacity(30);
-        executor.setThreadNamePrefix("ExcecutorService-");
+        executor.setCorePoolSize(executorServiceExecutorConfig.getCorePoolSize());
+        executor.setMaxPoolSize(executorServiceExecutorConfig.getMaxPoolSize());
+        executor.setQueueCapacity(executorServiceExecutorConfig.getQueueCapacity());
+        executor.setThreadNamePrefix(executorServiceExecutorConfig.getThreadNamePrefix());
         return executor;
     }
 }

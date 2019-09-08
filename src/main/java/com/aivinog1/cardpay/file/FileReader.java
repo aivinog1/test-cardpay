@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
 
-import static com.aivinog1.cardpay.AppConfiguration.FILE_TASK_EXECUTOR;
+import static com.aivinog1.cardpay.configuration.AppConfiguration.FILE_TASK_EXECUTOR;
 
 @Component
 @Slf4j

@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
 
-import static com.aivinog1.cardpay.AppConfiguration.EXECUTOR_SERVICE_EXECUTOR;
+import static com.aivinog1.cardpay.configuration.AppConfiguration.EXECUTOR_SERVICE_EXECUTOR;
 
 /**
  * @todo #3:30m Needs to write tests. For now tests are absent for this class, but we need unit tests for this class.

@@ -4,3 +4,16 @@ spring:
   main:
     web-environment: false
     banner-mode: "OFF"
+cardplay:
+  test:
+    executors:
+      executor-service-executor:
+        core-pool-size: 10
+        max-pool-size: 25
+        queue-capacity: 30
+        thread-name-prefix: "ExcecutorService-"
+      file-task-executor:
+        core-pool-size: 10
+        max-pool-size: 25
+        queue-capacity: 30
+        thread-name-prefix: "FileReading-"
