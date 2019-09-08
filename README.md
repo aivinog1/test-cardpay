@@ -1,4 +1,4 @@
-# test-cardpay
+# test-cardpay [![codecov](https://codecov.io/gh/aivinog1/test-cardpay/branch/master/graph/badge.svg)](https://codecov.io/gh/aivinog1/test-cardpay)
 Test task for a CardPay application.
 # How to run
 1. You need a maven to do this.
