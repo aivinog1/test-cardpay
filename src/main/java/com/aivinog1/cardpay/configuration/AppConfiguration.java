@@ -28,6 +28,7 @@ public class AppConfiguration {
 
     public static final String FILE_TASK_EXECUTOR = "fileTaskExecutor";
     public static final String EXECUTOR_SERVICE_EXECUTOR = "executorServiceExecutor";
+    public static final String JSON_PARSER_EXECUTOR = "jsonParserExecutor";
 
     @Bean
     public Map<SupportedFileType, ConverterService> convertersMap(List<ConverterService> converters) {
@@ -63,6 +64,17 @@ public class AppConfiguration {
         executor.setMaxPoolSize(executorServiceExecutorConfig.getMaxPoolSize());
         executor.setQueueCapacity(executorServiceExecutorConfig.getQueueCapacity());
         executor.setThreadNamePrefix(executorServiceExecutorConfig.getThreadNamePrefix());
+        return executor;
+    }
+
+    @Bean(JSON_PARSER_EXECUTOR)
+    public ThreadPoolTaskExecutor jsonParserExecutor(AppConfigurationProperties appConfigurationProperties) {
+        final AppConfigurationProperties.@NotNull Executor jsonParserExecutorConfig = appConfigurationProperties.getExecutors().getJsonParserExecutor();
+        final ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(jsonParserExecutorConfig.getCorePoolSize());
+        executor.setMaxPoolSize(jsonParserExecutorConfig.getMaxPoolSize());
+        executor.setQueueCapacity(jsonParserExecutorConfig.getQueueCapacity());
+        executor.setThreadNamePrefix(jsonParserExecutorConfig.getThreadNamePrefix());
         return executor;
     }
 }

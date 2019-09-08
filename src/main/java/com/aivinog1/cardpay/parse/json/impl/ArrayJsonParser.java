@@ -22,7 +22,7 @@ public class ArrayJsonParser implements JsonParser {
     private final ObjectMapper objectMapper;
 
     @Override
-    public List<Response> parsed(Collection<String> lines) {
+    public List<Response> parsed(List<String> lines) {
         List<JsonRequest> requests;
         try {
             requests = objectMapper.readValue(lines.stream().collect(Collectors.joining(System.lineSeparator())),

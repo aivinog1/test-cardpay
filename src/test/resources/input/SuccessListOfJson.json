@@ -1,0 +1,4 @@
+{ "orderId": 2, "amount": 200, "currency": "USD", "comment": "Check, please!" }
+{ "orderId": 3, "amount": 300, "currency": "RUB", "comment": "Счет, пожалуйста!" }
+{ "orderId": 4, "amount": 400, "currency": "EUR", "comment": "Check, please!"}
+{ "orderId": 5, "amount": 500, "currency": "YEN", "comment": "Check, please!"}

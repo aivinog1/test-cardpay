@@ -22,6 +22,8 @@ public class AppConfigurationProperties {
         private Executor fileTaskExecutor;
         @NotNull
         private Executor executorServiceExecutor;
+        @NotNull
+        private Executor jsonParserExecutor;
     }
 
     @Data
